@@ -1,0 +1,52 @@
+<html lang="">
+<head>
+    <meta charset="UTF-8">
+    <title>Lesson 1 Vue</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * {margin: 0; padding: 0;}
+        body {padding: 15px; font-family: Ubuntu, Arial, sans-serif;}
+        h1 {margin-bottom: 10px;}
+        .tabs {margin-bottom: 20px;}
+        .tabs .tabs-nav {display: inline-flex; border-top-left-radius: 10px; border-top-right-radius: 10px;}
+        .tabs .tabs-nav .tab-item {padding: 20px 25px; cursor: pointer;}
+        .tabs .tabs-nav .tab-item.active {color: #fff; border-top-left-radius: 10px; border-top-right-radius: 10px;}
+        .tabs .tabs-content {max-width: 800px; color: #fff; border-top-right-radius: 10px; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;}
+        .tabs .tabs-content .tab-item {padding: 20px 25px;}
+        .tabs .tabs-content .tab-item:not(.active) {display: none;}
+        .styles {display: flex; flex-wrap: wrap;}
+        .styles button {margin-right: 10px; padding: 7px 15px;}
+        .tabs.grey .tabs-nav {background-color: #dbdbdb;}
+        .tabs.grey .tabs-nav .tab-item.active, .tabs.grey .tabs-content {background-color: #2f2f2f;}
+        .tabs.blue .tabs-nav {background-color: #b9bdf9;}
+        .tabs.blue .tabs-nav .tab-item.active, .tabs.blue .tabs-content {background-color: #253173;}
+        .tabs.red .tabs-nav {background-color: #f2cfcf;}
+        .tabs.red .tabs-nav .tab-item.active, .tabs.red .tabs-content {background-color: #710e0e;}
+    </style>
+</head>
+<body>
+    <h1>Vue.js</h1>
+    <div id="app">
+        <div v-if="tabs" v-bind:class="[tabsClass, tabsClassStyle]">
+            <div v-bind:class="tabsNavClass">
+                <div v-for="(item, i) in tabs" v-bind:key="i" v-bind:class="tabItemClass(i)" v-on:click="setActive(i)">
+                    <h3>{{ item.title }}</h3>
+                </div>
+            </div>
+            <div v-bind:class="tabsContentClass">
+                <div v-for="(item, i) in tabs" v-bind:key="i" v-bind:class="tabItemClass(i)">
+                    <ul v-if="item.content">
+                        <li v-for="el in item.content">{{ el }}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="styles">
+            <button type="button" v-for="style in styles" v-bind:key="style" v-on:click="setStyle(style)">{{ style }} style</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
