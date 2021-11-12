@@ -21,10 +21,12 @@ const app = new Vue({
         tabs: tabs,
         activeIndex: 0,
         tabsClass: 'tabs',
-        tabsClassStyle: 'grey',
+        tabsClassStyle: styles[0],
         tabsNavClass: 'tabs-nav',
         tabsContentClass: 'tabs-content',
         styles: styles,
+    },
+    methods: {
         tabItemClass(i) {
             return {
                 active: i === this.activeIndex,
