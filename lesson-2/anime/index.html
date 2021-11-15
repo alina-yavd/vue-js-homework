@@ -1,0 +1,76 @@
+<html lang="">
+<head>
+    <meta charset="UTF-8">
+    <title>Lesson 2 Vue Anime</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * {margin: 0; padding: 0; box-sizing: border-box;}
+        body {padding: 15px; font-family: Ubuntu, Arial, sans-serif;}
+        h1 {margin-bottom: 10px;}
+        img {max-width: 100%;}
+        button {padding: 7px 15px; background-color: #e8e8e8; border: none; outline: none; border-radius: 10px;}
+        button.active {background-color: #2f2f2f; color: #f2f2f2;}
+        button.clear-filter {margin-left: 20px; background-color: #2f2f2f; color: #f2f2f2;}
+        .anime {display: flex; flex-wrap: wrap;}
+        .anime .item {width: calc(100% / 6); padding: 10px;}
+        .anime .item .item-inner {display: block; height: 100%; padding: 20px 10px; background-color: #f2f2f2; color: #2f2f2f; text-decoration: none; border-radius: 10px;}
+        .anime .item img {display: block; max-height: 280px; margin: 0 auto 10px; object-fit: cover;}
+        .anime .item h2, .anime .item h3, .anime .item h4, .anime .item h5, .anime .item h6 {margin-bottom: 10px;}
+        .filters-wrap {display: flex; flex-wrap: wrap; align-items: center; margin-bottom: 15px;}
+        .filters-wrap .block {width: calc(100% / 3);}
+        .filters-wrap .filter-btn-wrap {display: inline-flex; flex-wrap: wrap;}
+        .filters-wrap .filter-btn-wrap button {margin-right: 10px;}
+        .not-found {padding: 50px; text-align: center; background-color: #f2f2f2; border-radius: 10px;}
+    </style>
+</head>
+
+<body>
+    <h1>TOP Anime</h1>
+    <div id="app">
+
+        <wrapper wrapclass="filters-wrap">
+            <div class="block">
+                <span>Search by ID:</span>
+                <input type="text" name="search" v-model="filterId" @input="getFilteredAnime('id')">
+            </div>
+            <div class="block">
+                <span>Filter:</span>
+                <div class="filter-btn-wrap">
+                    <btn v-for="filter in filters" :key="filter.type" :name="filter.name"
+                         :class="{active: filterType === filter.type}"
+                         @click.native="getFilteredAnime(filter.type)"></btn>
+                </div>
+            </div>
+            <div class="block">
+                <btn v-if="filterType" @click.native="clearFilter()" class="clear-filter" name="Clear filter"></btn>
+            </div>
+        </wrapper>
+
+        <wrapper wrapclass="anime-wrap">
+            <preloader v-if="showPreloader"></preloader>
+            <error v-if="showError" :text="errorText"></error>
+            <not-found v-if="showNotFound" text="Anime not found"></not-found>
+
+            <wrapper v-if="anime" wrapclass="anime">
+                <div v-for="item in anime" :key="item.mal_id" class="item">
+                    <a class="item-inner" :href="item.url" target="_blank">
+                        <img :src="item.image_url" :alt="item.title">
+                        <h5>#{{ item.mal_id }}</h5>
+                        <h3>{{ item.title }}</h3>
+                        <div>Episodes: {{ item.episodes }}</div>
+                    </a>
+                </div>
+            </wrapper>
+        </wrapper>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script src="components/btn.js"></script>
+    <script src="components/error.js"></script>
+    <script src="components/not-found.js"></script>
+    <script src="components/preloader.js"></script>
+    <script src="components/wrapper.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
