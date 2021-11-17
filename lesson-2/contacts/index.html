@@ -1,0 +1,91 @@
+<html lang="">
+<head>
+    <meta charset="UTF-8">
+    <title>Lesson 2 Vue Contacts</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * {margin: 0; padding: 0; box-sizing: border-box;}
+        body {padding: 15px; font-family: Ubuntu, Arial, sans-serif;}
+        h1 {margin-bottom: 10px;}
+        img {max-width: 100%;}
+        button {padding: 7px 15px; background-color: #e8e8e8; border: none; outline: none; border-radius: 10px; cursor: pointer;}
+        button.active {background-color: #2f2f2f; color: #f2f2f2;}
+        button.clear-filter {margin-left: 20px; background-color: #2f2f2f; color: #f2f2f2;}
+        .contacts {display: flex; flex-wrap: wrap;}
+        .contacts .contact-item {width: calc(100% / 6); padding: 10px;}
+        .contacts .contact-item .item-inner {position: relative; display: block; height: 100%; padding: 20px 10px; background-color: #f2f2f2; color: #2f2f2f; text-decoration: none; border-radius: 10px; border: 1px solid transparent;}
+        .contacts .contact-item img {display: block; max-height: 200px; margin: 0 auto 10px; object-fit: cover; border-radius: 100px;}
+        .contacts .contact-item h2, .contacts .contact-item h3, .contacts .contact-item h4, .contacts .contact-item h5, .contacts .contact-item h6 {margin-bottom: 15px;}
+        .contacts .contact-item .id {position: absolute; top: 15px; right: 15px; font-size: small; background-color: #2f2f2f; color: #f2f2f2; padding: 3px 7px; border-radius: 5px;}
+        .contacts .contact-item.selected .item-inner {border-color: #2f2f2f;}
+        .filters-wrap {display: flex; flex-wrap: wrap; margin-bottom: 15px;}
+        .not-found {padding: 50px; text-align: center; background-color: #f2f2f2; border-radius: 10px;}
+        .contact-form-wrap {display: flex;}
+        .contact-form-wrap .col {width: 50%;}
+        .contacts-form {max-width: 460px; margin: 15px 0; padding: 30px; background-color: #f2f2f2; border-radius: 10px; text-align: center;}
+        .contacts-form .fields {display: flex; flex-wrap: wrap; flex-direction: column;}
+        .contacts-form .fields .field-item {margin-bottom: 15px;}
+        .contacts-form .fields .field-item label span {display: block; margin-bottom: 5px; font-size: smaller; text-align: left;}
+        .contacts-form .fields .field-item label input {display: block; width: 100%; padding: 5px; box-sizing: border-box;}
+    </style>
+</head>
+
+<body>
+    <h1>Contacts List</h1>
+    <div id="app">
+
+        <wrapper wrapclass="contact-form-wrap">
+            <div class="col">
+                <btn name="Create contact" @click.native="toggleForm"></btn>
+                <div v-if="showForm" class="contacts-form">
+                    <form v-on:submit="addContact">
+                        <div class="fields">
+                            <input-field v-model="firstName" name="firstName" label="First Name"></input-field>
+                            <input-field v-model="lastName" name="lastName" label="Last Name"></input-field>
+                            <input-field v-model="phone" name="phone" label="Phone"></input-field>
+                            <input-field v-model="imageUrl" name="imageUrl" label="Image URL"></input-field>
+                        </div>
+                        <btn type="submit" name="Add contact"></btn>
+                    </form>
+                </div>
+            </div>
+
+            <div class="col">
+                <btn v-if="selectedContactId" name="Delete selected contact" @click.native="deleteContact()" class="active"></btn>
+            </div>
+
+            <div class="col">
+                <wrapper wrapclass="filters-wrap">
+                    <div class="block">
+                        <span>Search:</span>
+                        <input type="text" name="search" v-model="filterText" @input="searchContacts">
+                        <div v-if="foundCount > 0">Found: {{ foundCount }}</div>
+                    </div>
+                    <div class="block">
+                        <btn v-if="filterText" @click.native="clearFilter()" class="clear-filter" name="Clear filter"></btn>
+                    </div>
+                </wrapper>
+            </div>
+        </wrapper>
+
+        <wrapper wrapclass="contacts-wrap">
+            <not-found v-if="showNotFound" text="Contacts not found"></not-found>
+
+            <wrapper v-if="contacts" wrapclass="contacts">
+                <div v-for="item in contacts" :key="item.key" class="contact-item" @click="selectContact(item.id)" :class="{selected: selectedContactId === item.id}">
+                    <contact :item="item"></contact>
+                </div>
+            </wrapper>
+        </wrapper>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script src="components/btn.js"></script>
+    <script src="components/contact.js"></script>
+    <script src="components/input-field.js"></script>
+    <script src="components/not-found.js"></script>
+    <script src="components/wrapper.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
